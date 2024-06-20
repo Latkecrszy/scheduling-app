@@ -1,0 +1,8 @@
+.env
+.idea
+.DS_Store
+.vscode
+env
+encrypt.key
+__pycache__
+venv

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Login</title>
+        <link href="../static/globals.css" rel="stylesheet"/>
+        <link href="../static/login.css" rel="stylesheet"/>
+        <script>
+            let token = '{{ token }}'
+        </script>
+    </head>
+    <body>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button id="signup" onclick="login()">Log in</button>
+    </body>
+    <script>
+        async function login() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const response = await fetch("/sign_in", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                    token: token
+                })
+            });
+            const data = await response.json();
+            if (data.error === '') {
+                location.assign(`/set_cookie?token=${data.token}&email=${email}`)
+            } else {
+                alert(data.error);
+            }
+        }
+
+        window.addEventListener('beforeunload', async () => {
+            await fetch('/invalidate-token', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({'token': token})
+            })
+        })
+    </script>
+</html>

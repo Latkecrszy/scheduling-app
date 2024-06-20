@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Messages</title>
+        <link href="../static/globals.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <input type="text" id="member" placeholder="add members">
+        <button id="add-member" onclick="addMember()">Add member</button>
+    <button id="create-conversation" onclick="createConversation()">Create Conversation</button>
+    </body>
+
+    <script>
+        let sender = '{{ sender }}'
+        let members = [sender]
+        async function addMember() {
+            members.push(document.getElementById('member').value)
+            console.log(members)
+        }
+
+        async function createConversation() {
+            let hash = await fetch('/create-conversation', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(({
+                    'members': members,
+                    'sender': sender
+                }))
+            }).then(resp => resp.json())
+            console.log(hash)
+            hash = hash['hash']
+            location.replace('http://127.0.0.1:8000/message?hash=' + hash)
+
+        }
+    </script>
+</html>

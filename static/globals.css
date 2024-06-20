@@ -1,0 +1,11 @@
+:root {
+    --white: #FFF;
+    --black: #131212;
+    --gray: #EFF0EF;
+    --accent: #FFC404;
+}
+
+html {
+    font-family: "Poppins", sans-serif;
+}
+
